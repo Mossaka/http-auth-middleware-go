@@ -75,6 +75,24 @@ cd example && ./build.sh
 wasmtime serve service.wasm --addr 127.0.0.1:3000
 ```
 
+### Running with Go
+First, [install `tinygo`](https://github.com/tinygo-org/tinygo/releases),
+version 0.30.0, which is a LLVM-based Go compiler alternative.
+
+Then, [install `wit-bindgen-cli`](https://github.com/bytecodealliance/wit-bindgen) rev 1af7e87066854894ab140d2a630a0bc23c8b126f (will update this when a new version is released) with `cargo install wit-bindgen-cli --git https://github.com/bytecodealliance/wit-bindgen --rev 1af7e87066854894ab140d2a630a0bc23c8b126f`, which is a tool for generating Go bindings for WIT interfaces.
+
+Lastly, [install `wasm-tools`](https://github.com/bytecodealliance/wasm-tools/releases/) version 1.0.48, which is a tool for building Wasm components.
+
+```bash
+export CLIENT_ID=<YOUR_GITHUB_APP_CLIENT_ID> 
+export CLIENT_SECRET=<YOUR_GITHUB_APP_CLIENT_SECRET>
+cargo component build --manifest-path github-oauth/Cargo.toml --release --features compile-time-secrets
+# Compose the auth component with the business logic component using wasm-tools
+cd example-go && ./build.sh
+# Serve the component on the expected host and port
+wasmtime serve service.wasm --addr 127.0.0.1:3000
+```
+
 ### Configuring the callback URL
 
 Instead of using the default callback URL of `http://127.0.0.1:3000/login/callback`, you can configure the URL in an environment variable that is resolved at build time. This is useful in the case that the component is not running locally, rather in a hosted environment such as Fermyon Cloud.
