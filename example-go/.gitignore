@@ -1,0 +1,6 @@
+/target
+target_world
+*.component.wasm
+*.embed.wasm
+main.wasm
+.spin
